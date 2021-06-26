@@ -2369,6 +2369,16 @@ m68k-*-elf* | fido-*-elf*)
 		;;
 	esac
 	;;
+m68k-*-os9*)
+	default_m68k_cpu=68000
+	# no coldfire though...
+	default_cf_cpu=5206
+	# elf + m68k-os9.h that overriding FRAME_POINTER_REGNO A5_REG
+	tm_file="${tm_file} m68k/m68k-none.h m68k/m68kelf.h dbxelf.h elfos.h newlib-stdint.h m68k/m68kemb.h m68k/m68020-elf.h m68k/m68k-os9.h"
+	tm_defines="${tm_defines} MOTOROLA=1"
+	tmake_file="m68k/t-floatlib m68k/t-m68kbare m68k/t-m68kelf"
+	tmake_file="$tmake_file m68k/t-mlibs"
+	;;
 m68k*-*-netbsdelf*)
 	default_m68k_cpu=68020
 	default_cf_cpu=5475

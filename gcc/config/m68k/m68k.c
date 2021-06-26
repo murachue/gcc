@@ -5234,10 +5234,18 @@ print_operand_address (FILE *file, rtx addr)
 	}
       else if (TARGET_PCREL)
 	{
-	  /* (d16,PC) or (bd,PC,Xn) (with suppressed index register).  */
-	  fputc ('(', file);
-	  output_addr_const (file, addr);
-	  asm_fprintf (file, flag_pic == 1 ? ":w,%Rpc)" : ":l,%Rpc)");
+	  tree decl;
+
+	  if (TARGET_A6REL && (decl = SYMBOL_REF_DECL (addr)) != 0 && TREE_CODE (decl) == VAR_DECL) {
+	    /* symbol(%a6) */
+	    output_addr_const (file, addr);
+	    asm_fprintf (file, "(%Ra6)");
+	  } else {
+	    /* (d16,PC) or (bd,PC,Xn) (with suppressed index register).  */
+	    fputc ('(', file);
+	    output_addr_const (file, addr);
+	    asm_fprintf (file, flag_pic == 1 ? ":w,%Rpc)" : ":l,%Rpc)");
+	  }
 	}
       else
 	{
@@ -7083,6 +7091,8 @@ m68k_conditional_register_usage (void)
     }
   if (flag_pic)
     fixed_regs[PIC_REG] = call_used_regs[PIC_REG] = 1;
+  if (TARGET_A6REL)
+    fixed_regs[A6_REG] = call_used_regs[A6_REG] = 1;
 }
 
 static void

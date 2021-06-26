@@ -202,3 +202,7 @@ Support TLS segment larger than 64K.
 mbsrw
 Target RejectNegative Mask(BSRW)
 Use bsr.w for inter-function call. Only for small executable.
+
+ma6rel
+Target RejectNegative Mask(A6REL)
+Use a6-relative for referencing global variable. Only for OS-9/68000 executable.
