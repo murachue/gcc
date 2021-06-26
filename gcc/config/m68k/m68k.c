@@ -7089,7 +7089,7 @@ m68k_conditional_register_usage (void)
         if (TEST_HARD_REG_BIT (x, i))
 	  fixed_regs[i] = call_used_regs[i] = 1;
     }
-  if (flag_pic)
+  if (flag_pic && !TARGET_PCREL)
     fixed_regs[PIC_REG] = call_used_regs[PIC_REG] = 1;
   if (TARGET_A6REL)
     fixed_regs[A6_REG] = call_used_regs[A6_REG] = 1;
