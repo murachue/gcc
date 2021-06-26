@@ -607,7 +607,13 @@ m68k_option_override (void)
   if (TARGET_PCREL && flag_pic == 0)
     flag_pic = 1;
 
-  if (!flag_pic)
+  if (TARGET_BSRW)
+    {
+      m68k_symbolic_call_var = M68K_SYMBOLIC_CALL_BSR_W;
+
+      m68k_symbolic_jump = "bra.w %p0";
+    }
+  else if (!flag_pic)
     {
       m68k_symbolic_call_var = M68K_SYMBOLIC_CALL_JSR;
 
@@ -648,6 +654,10 @@ m68k_option_override (void)
 
     case M68K_SYMBOLIC_CALL_BSR_P:
       m68k_symbolic_call = "bsr%.l %p0";
+      break;
+
+    case M68K_SYMBOLIC_CALL_BSR_W:
+      m68k_symbolic_call = "bsr%.w %p0";
       break;
 
     case M68K_SYMBOLIC_CALL_NONE:

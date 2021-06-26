@@ -898,7 +898,8 @@ extern const char *m68k_symbolic_call;
 extern const char *m68k_symbolic_jump;
 
 enum M68K_SYMBOLIC_CALL { M68K_SYMBOLIC_CALL_NONE, M68K_SYMBOLIC_CALL_JSR,
-			  M68K_SYMBOLIC_CALL_BSR_C, M68K_SYMBOLIC_CALL_BSR_P };
+			  M68K_SYMBOLIC_CALL_BSR_C, M68K_SYMBOLIC_CALL_BSR_P,
+			  M68K_SYMBOLIC_CALL_BSR_W, };
 
 extern enum M68K_SYMBOLIC_CALL m68k_symbolic_call_var;
 

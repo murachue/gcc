@@ -197,3 +197,8 @@ Support more than 8192 GOT entries on ColdFire.
 mxtls
 Target Mask(XTLS)
 Support TLS segment larger than 64K.
+
+; like -msmall-code of gcc-amigaos?
+mbsrw
+Target RejectNegative Mask(BSRW)
+Use bsr.w for inter-function call. Only for small executable.
