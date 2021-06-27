@@ -5187,6 +5187,33 @@ m68k_delegitimize_address (rtx orig_x)
 }
   
 
+static tree
+get_symbol_decl (rtx addr)
+{
+  switch (GET_CODE (addr))
+  {
+  case SYMBOL_REF:
+  //case LABEL_REF:
+    return SYMBOL_REF_DECL (addr);
+    /*  */
+    break;
+  case CONST:
+    return get_symbol_decl (XEXP (addr, 0));
+  case PLUS:
+    {
+      tree decl = get_symbol_decl (XEXP (addr, 0));
+      if (decl) {
+	return decl;
+      }
+      return get_symbol_decl (XEXP (addr, 1));
+    }
+    break;
+  default:
+    /* I don't know this case... bugreport please */
+    gcc_unreachable ();
+  }
+}
+
 /* A C compound statement to output to stdio stream STREAM the
    assembler syntax for an instruction operand that is a memory
    reference whose address is ADDR.  ADDR is an RTL expression.
@@ -5234,9 +5261,10 @@ print_operand_address (FILE *file, rtx addr)
 	}
       else if (TARGET_PCREL)
 	{
-	  tree decl;
+	  tree decl = TARGET_A6REL ? get_symbol_decl (addr) : NULL;
 
-	  if (TARGET_A6REL && (decl = SYMBOL_REF_DECL (addr)) != 0 && TREE_CODE (decl) == VAR_DECL) {
+	  if (decl && TREE_CODE (decl) == VAR_DECL)
+	  {
 	    /* symbol(%a6) */
 	    output_addr_const (file, addr);
 	    asm_fprintf (file, "(%Ra6)");
