@@ -5263,7 +5263,7 @@ print_operand_address (FILE *file, rtx addr)
 	{
 	  tree decl = TARGET_A6REL ? get_symbol_decl (addr) : NULL;
 
-	  if (decl && TREE_CODE (decl) == VAR_DECL)
+	  if (decl && TREE_CODE (decl) == VAR_DECL && !DECL_IN_CONSTANT_POOL (decl))
 	  {
 	    /* symbol(%a6) */
 	    output_addr_const (file, addr);
