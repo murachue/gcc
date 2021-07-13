@@ -140,7 +140,7 @@
       return true;
 
     case CONST:
-      op = XEXP (op, 0);
+      op = XEXP (op, 0); // op must be PLUS
       return ((GET_CODE (XEXP (op, 0)) == SYMBOL_REF
 	       || GET_CODE (XEXP (op, 0)) == LABEL_REF)
 	      && GET_CODE (XEXP (op, 1)) == CONST_INT);

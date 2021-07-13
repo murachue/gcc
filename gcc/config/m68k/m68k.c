@@ -3488,8 +3488,8 @@ handle_move_double (rtx operands[2],
 	}
       else if (optype0 == OFFSOP)
 	{
-	  middlehalf[0] = adjust_address (operands[0], SImode, 4);
-	  latehalf[0] = adjust_address (operands[0], SImode, size - 4);
+	  middlehalf[0] = adjust_address_nv (operands[0], SImode, 4);
+	  latehalf[0] = adjust_address_nv (operands[0], SImode, size - 4);
 	}
       else
 	{
@@ -3504,8 +3504,8 @@ handle_move_double (rtx operands[2],
 	}
       else if (optype1 == OFFSOP)
 	{
-	  middlehalf[1] = adjust_address (operands[1], SImode, 4);
-	  latehalf[1] = adjust_address (operands[1], SImode, size - 4);
+	  middlehalf[1] = adjust_address_nv (operands[1], SImode, 4);
+	  latehalf[1] = adjust_address_nv (operands[1], SImode, size - 4);
 	}
       else if (optype1 == CNSTOP)
 	{
@@ -3584,8 +3584,8 @@ handle_move_double (rtx operands[2],
 	  if (GET_MODE (operands[1]) == XFmode)
 	    {
 	      operands[1] = gen_rtx_MEM (XFmode, latehalf[0]);
-	      middlehalf[1] = adjust_address (operands[1], DImode, size - 8);
-	      latehalf[1] = adjust_address (operands[1], DImode, size - 4);
+	      middlehalf[1] = adjust_address_nv (operands[1], DImode, size - 8);
+	      latehalf[1] = adjust_address_nv (operands[1], DImode, size - 4);
 	    }
 	  else
 	    {
@@ -5193,17 +5193,16 @@ get_symbol_decl (rtx addr)
   switch (GET_CODE (addr))
   {
   case SYMBOL_REF:
-  //case LABEL_REF:
+  case LABEL_REF:
     return SYMBOL_REF_DECL (addr);
-    /*  */
-    break;
   case CONST:
     return get_symbol_decl (XEXP (addr, 0));
   case PLUS:
     {
-      tree decl = get_symbol_decl (XEXP (addr, 0));
-      if (decl) {
-	return decl;
+      rtx op0 = XEXP (addr, 0);
+      if (GET_CODE (op0) == SYMBOL_REF || GET_CODE (op0) == LABEL_REF)
+      {
+	return get_symbol_decl (op0);
       }
       return get_symbol_decl (XEXP (addr, 1));
     }
