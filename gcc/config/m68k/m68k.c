@@ -5193,8 +5193,9 @@ get_symbol_decl (rtx addr)
   switch (GET_CODE (addr))
   {
   case SYMBOL_REF:
-  case LABEL_REF:
     return SYMBOL_REF_DECL (addr);
+  case LABEL_REF:
+    return 0;
   case CONST:
     return get_symbol_decl (XEXP (addr, 0));
   case PLUS:
